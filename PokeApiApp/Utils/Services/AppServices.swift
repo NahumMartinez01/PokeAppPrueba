@@ -40,11 +40,11 @@ extension AppServices: AppServicesProtocol {
         request.httpMethod = method
         request.allHTTPHeaderFields = headers
         request.httpBody = body
-        request.timeoutInterval = 3000.0 // Timeout de 30 segundos
+        request.timeoutInterval = 3000.0
         
-        // Para conexiones lentas, puedes configurar un timeout para la conexión
+        // PARA TRABAJAR CONEXIONES LENTAS SE SETEA UNOS TIMEOUT
         let sessionConfig = URLSessionConfiguration.default
-        sessionConfig.timeoutIntervalForRequest = 3000.0 // Timeout para cada solicitud
+        sessionConfig.timeoutIntervalForRequest = 3000.0
         sessionConfig.timeoutIntervalForResource = 3000.0
         let (data, response) = try await URLSession.shared.data(for: request)
         

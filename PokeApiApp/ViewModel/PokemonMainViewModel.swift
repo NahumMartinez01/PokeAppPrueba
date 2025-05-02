@@ -6,14 +6,19 @@
 //
 import Foundation
 import CoreData
+import Combine
 
 class PokemonMainViewModel: ObservableObject {
     @Published var pokemons: [PokemonListModel] = []
     @Published var detailPokemon: [PokemonDetailModel] = []
+    @Published var currentError: PokemonError? = nil
+    @Published var searchText: String = ""
+    @Published var filterType: FilterType = .name
     
     private var appServices: AppServicesProtocol
     private var myAppManager: MyAppManager
     private var viewContext: NSManagedObjectContext
+    private var cancellable = Set<AnyCancellable>()
     
     private var didDownloadPokemons: Bool {
         get { UserDefaults.standard.bool(forKey: "DidDownloadPokemons") }
@@ -25,7 +30,15 @@ class PokemonMainViewModel: ObservableObject {
         self.appServices = appServices
         self.myAppManager = myAppManager
         self.viewContext = viewContext
-        self.fetchSavedPokemons()
+        
+        $searchText
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            .removeDuplicates()
+            .sink{[weak self] text in
+                guard let self = self else { return }
+                self.fetchSavedPokemons(searchText: text, filterType: self.filterType)
+            }
+            .store(in: &cancellable)
     }
     
     @MainActor
@@ -33,7 +46,7 @@ class PokemonMainViewModel: ObservableObject {
         guard !didDownloadPokemons else {
                 print("✅ Pokémons ya fueron descargados anteriormente")
                 return
-            }
+        }
         self.myAppManager.isLoadingViewVisible = true
         do {
             let response = try await appServices.fetchRequest(
@@ -54,6 +67,7 @@ class PokemonMainViewModel: ObservableObject {
             savePokemonsToCoreData()
             didDownloadPokemons = true 
         } catch {
+            currentError = .downloadFailed(message: error.localizedDescription)
             print("Un error ha ocurrido:", error.localizedDescription)
         }
         self.myAppManager.isLoadingViewVisible = false
@@ -71,6 +85,7 @@ class PokemonMainViewModel: ObservableObject {
             )
             self.detailPokemon.append(response)
         } catch {
+            currentError = .downloadFailed(message: error.localizedDescription)
             print("Error al obtener el detalle para \(url):", error.localizedDescription)
         }
     }
@@ -78,13 +93,29 @@ class PokemonMainViewModel: ObservableObject {
 
 // MARK: CORE DATA OPERATIONS
 extension PokemonMainViewModel {
-    func fetchSavedPokemons() {
+    func fetchSavedPokemons(searchText: String = "", filterType: FilterType = .name) {
+        self.myAppManager.isLoadingViewVisible = true
         let fetchRequest: NSFetchRequest<PokemonDetailEntity> = PokemonDetailEntity.fetchRequest()
+        
+        if !searchText.isEmpty {
+            switch filterType {
+            case .name:
+                fetchRequest.predicate = NSPredicate(format: "name CONTAINS[cd] %@", searchText)
+                break
+            case .type:
+                fetchRequest.predicate = NSPredicate(format: "ANY types.name CONTAINS[cd] %@", searchText)
+                break
+            case .id:
+                if let id = Int64(searchText) {
+                    fetchRequest.predicate = NSPredicate(format: "id == %lld", id)
+                }
+                break
+            }
+        }
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "id", ascending: true)]
         
         do {
             let entities = try viewContext.fetch(fetchRequest)
-            //print("data guardada", entities)
             detailPokemon = entities.map { entity in
                 PokemonDetailModel(
                     id: Int(entity.id),
@@ -100,8 +131,11 @@ extension PokemonMainViewModel {
                     } ?? []
                 )
             }
+            self.myAppManager.isLoadingViewVisible = false
         } catch {
-            print("Error fetching Pokémon: \(error.localizedDescription)")
+            self.myAppManager.isLoadingViewVisible = false
+            currentError = .getCoreDataError(message: error.localizedDescription)
+           
         }
     }
     
@@ -119,7 +153,6 @@ extension PokemonMainViewModel {
                             viewContext.delete(type)
                         }
                     }
-                    
                     for typeSlot in pokemon.types {
                         let typeEntity = PokemonTypeEntity(context: viewContext)
                         typeEntity.slot = Int64(typeSlot.slot)
@@ -140,7 +173,7 @@ extension PokemonMainViewModel {
                     }
                 }
             } catch {
-                print("Error processing Pokémon \(pokemon.name): \(error.localizedDescription)")
+                currentError = .coreDataError(message: error.localizedDescription)
             }
         }
 
@@ -149,7 +182,7 @@ extension PokemonMainViewModel {
             PersistenceController.shared.saveContext() 
             fetchSavedPokemons()
         } catch {
-            print("Error saving to Core Data: \(error.localizedDescription)")
+            currentError = .coreDataError(message: error.localizedDescription)
         }
     }
 }

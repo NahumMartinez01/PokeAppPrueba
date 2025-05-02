@@ -19,9 +19,9 @@ struct PokemonItemView: View {
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
-                .fill(AppUtils.backgroundColor(for: pokemon.types.first?.type.name ?? ""))
+                .fill(AppUtils.backgroundGradient(for: pokemon.types.first?.type.name ?? ""))
         )
-        .shadow(color: AppUtils.backgroundColor(for: pokemon.types.first?.type.name ?? "").opacity(0.20), radius: 4, x: 0, y: 4)
+        .shadow(color: AppUtils.backgroundColor(for: pokemon.types.first?.type.name ?? ""), radius: 2, x: 0, y: 2)
         .rotation3DEffect(
             .degrees(0),
             axis: (x: 0, y: 0, z: 20),

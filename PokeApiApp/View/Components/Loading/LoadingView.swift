@@ -27,7 +27,7 @@ struct LoadingView: View {
             
             LinearGradient(
                 gradient: Gradient(colors: [
-                    Color.gray.opacity(0.9),
+                    Color.gray,
                     Color.white
                 ]),
                 startPoint: .top,

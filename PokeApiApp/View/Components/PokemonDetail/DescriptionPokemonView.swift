@@ -14,24 +14,35 @@ struct DescriptionPokemonView: View {
         VStack(alignment: .center) {
             Text(name)
                 .font(.system(size: 20, weight: .bold))
-                .foregroundStyle(Color.white)
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .foregroundStyle(Color.black.opacity(0.8))
+                .textCase(.uppercase)
+                .accessibilityLabel("Nombre del pokemon es: \(name)")
+            
             HStack {
                 ForEach(type) { type in
                     VStack {
                         Text(type.type.name)
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundStyle(Color.white)
+                            .font(.system(size: 14, weight: .semibold, design: .default))
+                            .foregroundStyle(Color.black.opacity(0.8))
+                            .textCase(.uppercase)
                             .multilineTextAlignment(.center)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .padding(.vertical, 2)
                     }
-                    .overlay {
+                    .background(
                         RoundedRectangle(cornerRadius: 8.0)
                             .fill(Color.white.opacity(0.3))
                            
-                    }
+                    )
+                    .accessibilityLabel("Pokemon \(name), el tipo del Pokemon es: \(type.type.name)")
                 }
             }
+           
             
         }
     }

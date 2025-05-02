@@ -16,18 +16,35 @@ struct PokemonMainView: View {
     }
     
     var body: some View {
-        
-        VStack {
+        ZStack {
+            Color(.background)
+                .ignoresSafeArea(.all)
+            
+            VStack {
+                SearchingView(searchText: $viewModel.searchText, filterType: $viewModel.filterType)
                 PokemonListView(pokemons: viewModel.detailPokemon)
+            }
         }
+        .navigationTitle("POKEDEX")
         .task {
+            viewModel.fetchSavedPokemons()
             await viewModel.getPokemonsList()
         }
-        
+        .alert(item: $viewModel.currentError) { error in
+            Alert(
+                title: Text("Ocurrió un error"),
+                message: Text(error.localizedDescription),
+                dismissButton: .default(Text("OK")) {
+                    viewModel.currentError = nil
+                }
+            )
+        }
+      
+       
+
     }
 }
 
-
 #Preview {
-    PokemonMainView(context: NSManagedObjectContext()  )
+    PokemonMainView(context: NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType))
 }

@@ -16,18 +16,14 @@ struct PokemonListView: View {
     
     var body: some View {
         VStack {
-            Text("POKEDEX")
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.leading, 12)
-                .font(.system(size: 32, weight: .bold))
-                
             ScrollView {
                 LazyVGrid(columns: columns) {
-                    ForEach(pokemons) { pokemon in
+                    ForEach(pokemons, id: \.id) { pokemon in
                         PokemonItemView(pokemon: pokemon)
                             .padding(8)
                     }
                 }
+                .accessibilityLabel("Listado de pokemons")
             }
         }
     }

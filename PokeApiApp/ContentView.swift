@@ -11,24 +11,23 @@ import CoreData
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var myAppManager: MyAppManager
-    @State private var bounce: Bool = false
     var body: some View {
         ZStack {
-            
-            Color(.background)
-                .ignoresSafeArea(.all)
-            
-            PokemonMainView(context: viewContext)
-            
+          
+            NavigationStack {
+                PokemonMainView(context: viewContext)
+            }
             if myAppManager.isLoadingViewVisible {
                 ZStack {
-                    LoadingView(bounce: $bounce)
+                    LoadingView(bounce: $myAppManager.bounce)
                 }
                 .onAppear {
-                    bounce = true
+                    myAppManager.bounce = true
                 }
             }
+            
         }
+       
     }
 }
 

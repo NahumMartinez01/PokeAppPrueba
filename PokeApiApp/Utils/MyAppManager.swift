@@ -10,12 +10,14 @@ import Foundation
 // NOTE: This is the source of truth for the App
 class MyAppManager: ObservableObject {
     @Published var isLoadingViewVisible: Bool = false
-    
+    @Published var bounce: Bool = false
     static let shared = MyAppManager()
     
     init(
-        isLoadingViewVisible: Bool = false
+        isLoadingViewVisible: Bool = false,
+        bounce: Bool = false
     ) {
         self.isLoadingViewVisible = isLoadingViewVisible
+        self.bounce = bounce
     }
 }
