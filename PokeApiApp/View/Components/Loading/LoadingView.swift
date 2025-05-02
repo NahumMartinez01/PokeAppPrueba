@@ -23,8 +23,6 @@ struct LoadingView: View {
             
             Color.black
                 .frame(height: 2)
-            
-            
             LinearGradient(
                 gradient: Gradient(colors: [
                     Color.gray,

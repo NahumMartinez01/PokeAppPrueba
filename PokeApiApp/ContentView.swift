@@ -13,7 +13,6 @@ struct ContentView: View {
     @EnvironmentObject var myAppManager: MyAppManager
     var body: some View {
         ZStack {
-          
             NavigationStack {
                 PokemonMainView(context: viewContext)
             }
@@ -25,9 +24,8 @@ struct ContentView: View {
                     myAppManager.bounce = true
                 }
             }
-            
         }
-       
+
     }
 }
 

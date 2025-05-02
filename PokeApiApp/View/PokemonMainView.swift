@@ -27,7 +27,7 @@ struct PokemonMainView: View {
         }
         .navigationTitle("POKEDEX")
         .task {
-            viewModel.fetchSavedPokemons()
+           // viewModel.fetchSavedPokemons()
             await viewModel.getPokemonsList()
         }
         .alert(item: $viewModel.currentError) { error in
@@ -39,9 +39,6 @@ struct PokemonMainView: View {
                 }
             )
         }
-      
-       
-
     }
 }
 

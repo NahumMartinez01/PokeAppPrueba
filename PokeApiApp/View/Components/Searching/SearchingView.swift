@@ -16,17 +16,19 @@ struct SearchingView: View {
         VStack(spacing: 20) {
             VStack {
                 TextField("Buscar", text: $searchText)
+                    .frame(height: 45)
                     .padding(6)
                     .foregroundColor(.primary)
                     .focused($isFocused)
                     .background(
                         RoundedRectangle(cornerRadius: 8.0)
-                            .fill(Color.white.opacity(0.3))
+                            .fill(Color(.input))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8.0)
+                                    .stroke(Color(.borderInput), lineWidth: 1)
+                            )
                     )
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8.0)
-                            .stroke(Color.black.opacity(0.5), lineWidth: 1)
-                    )
+                   
                     .onChange(of: searchText) { newValue in
                         switch filterType {
                         case .id:

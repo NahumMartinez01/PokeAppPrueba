@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PokemonImageView: View {
+    @EnvironmentObject var myAppManager: MyAppManager
     let urlImage: String
     var body: some View {
         AsyncImage(url: URL(string: "\(urlImage)")) { phase in
@@ -20,11 +21,11 @@ struct PokemonImageView: View {
                     .scaledToFill()
                     .frame(width: 100, height: 100)
             case .failure:
-                Image(systemName: "xmark.circle")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    .foregroundColor(.red)
+                EmptyView()
+                    .onAppear {
+                        myAppManager.errorMessage = .downloadFailed(message: "No se pudo descargar la imagen del Pokémon")
+                        myAppManager.showErrorAlert = true
+                    }
             @unknown default:
                 EmptyView()
             }
@@ -34,6 +35,15 @@ struct PokemonImageView: View {
                 .fill(Color.gray.opacity(0.2))
                 
         )
+        .alert(isPresented: $myAppManager.showErrorAlert) {
+                    Alert(
+                        title: Text("Error"),
+                        message: Text(myAppManager.errorMessage?.errorDescription  ?? "Error desconocido"),
+                        dismissButton: .default(Text("OK")) {
+                            myAppManager.errorMessage = nil 
+                        }
+                    )
+                }
     }
 }
 

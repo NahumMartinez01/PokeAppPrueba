@@ -43,10 +43,10 @@ class PokemonMainViewModel: ObservableObject {
     
     @MainActor
     func getPokemonsList() async {
-        guard !didDownloadPokemons else {
-                print("✅ Pokémons ya fueron descargados anteriormente")
-                return
-        }
+//        guard !didDownloadPokemons else {
+//                print("✅ Pokémons ya fueron descargados anteriormente")
+//                return
+//        }
         self.myAppManager.isLoadingViewVisible = true
         do {
             let response = try await appServices.fetchRequest(

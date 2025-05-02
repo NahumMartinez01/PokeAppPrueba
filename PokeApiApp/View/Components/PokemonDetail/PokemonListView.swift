@@ -25,11 +25,14 @@ struct PokemonListView: View {
                 }
                 .accessibilityLabel("Listado de pokemons")
             }
+            .overlay(
+                pokemons.isEmpty ? Text("No se encontraron Pokémons")
+                    .foregroundColor(.gray)
+                    .font(.subheadline) : nil
+            )
         }
     }
 }
-
-
-#Preview {
-    PokemonListView(pokemons: [])
-}
+    #Preview {
+        PokemonListView(pokemons: [])
+    }
