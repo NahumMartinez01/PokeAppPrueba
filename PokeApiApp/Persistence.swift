@@ -12,6 +12,13 @@ class PersistenceController: ObservableObject {
     
     let container: NSPersistentContainer
     
+    var viewContext: NSManagedObjectContext {
+           container.viewContext
+       }
+    var backgroundContext: NSManagedObjectContext {
+           container.newBackgroundContext()
+       }
+    
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "Pokemon")
         if inMemory {
@@ -28,6 +35,7 @@ class PersistenceController: ObservableObject {
         }
         
         container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergeByPropertyObjectTrumpMergePolicy
     }
     
     func saveContext() {

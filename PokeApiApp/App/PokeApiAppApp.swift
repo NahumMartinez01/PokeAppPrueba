@@ -6,20 +6,35 @@
 //
 import SwiftUI
 
-
 @main
 struct PokeApiAppApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject var myAppManager = MyAppManager.shared
     @StateObject private var persistenceController = PersistenceController.shared
-
-    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
+    init() {
+        NotificationManager.shared.requestAuthorization()
+        BackgroundTaskManager.shared.registerBackgroundTasks()
+    }
     var body: some Scene {
         WindowGroup {
                 ContentView()
                     .environmentObject(myAppManager)
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    .onAppear {
+                        BackgroundTaskManager.shared.scheduleAppRefresh()
+                        BackgroundTaskManager.shared.scheduleProcessing()
+                    }
+                    .onChange(of: scenePhase) { newPhase in
+                        switch newPhase {
+                        case .background:
+                            BackgroundTaskManager.shared.scheduleAppRefresh()
+                            BackgroundTaskManager.shared.scheduleProcessing()
+                        default:
+                            break
+                        }
+                    }
         }
     }
-
 }
 

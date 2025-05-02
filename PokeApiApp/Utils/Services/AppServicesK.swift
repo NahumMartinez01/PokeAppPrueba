@@ -14,7 +14,7 @@ struct AppServicesK {
 extension AppServicesK {
     
     struct PokemonEP {
-        static let GET_POKEMON_LIST = "pokemon?limit=5&offset=0"
+        static let GET_POKEMON_LIST = "pokemon?limit=%@&offset=%@"
         static let GET_POKEMON_INFO = "pokemon/%@"
     }
 }

@@ -107,5 +107,9 @@ class AppUtils {
         )
     }
 
-
+    static func extractID(from url: String) -> Int? {
+            let trimmed = url.trimmingCharacters(in: CharacterSet(charactersIn: "/"))
+            let components = trimmed.components(separatedBy: "/")
+            return Int(components.last ?? "")
+        }
 }

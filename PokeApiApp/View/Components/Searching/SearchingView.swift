@@ -11,6 +11,7 @@ struct SearchingView: View {
     @Binding var searchText: String
     @Binding var filterType: FilterType
     @FocusState private var isFocused: Bool
+    var onSearchChange: ((String) -> Void)? = nil
     
     var body: some View {
         VStack(spacing: 20) {
@@ -28,7 +29,6 @@ struct SearchingView: View {
                                     .stroke(Color(.borderInput), lineWidth: 1)
                             )
                     )
-                   
                     .onChange(of: searchText) { newValue in
                         switch filterType {
                         case .id:
@@ -38,6 +38,8 @@ struct SearchingView: View {
                         default:
                             break
                         }
+                        onSearchChange?(newValue)
+                        
                     }
                     .accessibilityLabel("Campo de búsqueda de pokemon")
             }

@@ -28,9 +28,10 @@ struct AppServicesUtils {
 extension AppServicesUtils {
     
     struct PokemonURLs {
-        
-        static func getPokemonList() -> String {
-            return "\(AppServicesK.baseUrl)\(AppServicesK.PokemonEP.GET_POKEMON_LIST)"
+        static func getPokemonList(limit: Int, offset: Int) -> String {
+            let endpoint = String(format: AppServicesK.PokemonEP.GET_POKEMON_LIST, String(limit), String(offset))
+            return "\(AppServicesK.baseUrl)\(endpoint)"
+
         }
         
         static func getPokemonDetail(pokemonId: String) -> String {

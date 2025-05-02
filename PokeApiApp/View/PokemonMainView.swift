@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct PokemonMainView: View {
+    @EnvironmentObject var myAppManager: MyAppManager
     @StateObject var viewModel: PokemonMainViewModel
     
     init(context: NSManagedObjectContext) {
@@ -21,13 +22,15 @@ struct PokemonMainView: View {
                 .ignoresSafeArea(.all)
             
             VStack {
-                SearchingView(searchText: $viewModel.searchText, filterType: $viewModel.filterType)
-                PokemonListView(pokemons: viewModel.detailPokemon)
+                SearchingView(searchText: $viewModel.searchText, filterType: $viewModel.filterType){ newSearch in
+                    viewModel.fetchSavedPokemons(searchText: newSearch, filterType: viewModel.filterType)
+                }
+                PokemonListView(pokemons: myAppManager.detailPokemon)
             }
         }
         .navigationTitle("POKEDEX")
         .task {
-           // viewModel.fetchSavedPokemons()
+            viewModel.fetchSavedPokemons()
             await viewModel.getPokemonsList()
         }
         .alert(item: $viewModel.currentError) { error in
@@ -44,4 +47,5 @@ struct PokemonMainView: View {
 
 #Preview {
     PokemonMainView(context: NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType))
+        .environmentObject(MyAppManager())
 }
