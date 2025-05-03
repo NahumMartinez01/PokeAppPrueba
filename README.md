@@ -27,7 +27,7 @@ git clone https://github.com/NahumMartinez01/PokeAppPrueba.git
 ## Notas Importantes 
 Para probar correctamente las tareas en segundo plano (**Background Fetch**), se recomienda realizar las pruebas en un dispositivo físico. El simulador de Xcode tiene limitaciones que pueden afectar la ejecución de tareas en segundo plano, como la simulación del ciclo de vida de la aplicación y la gestión de recursos, lo que podría generar comportamientos inesperados.
 
-Debido a que el sistema operativo iOS se encarga de gestionar las tareas en segundo plano, puede demorarse mucho en ejecutarse la request hasta que el SO lo vea conveniente.
+Debido a que el sistema operativo iOS se encarga de gestionar las tareas en segundo plano, puede demorarse mucho en ejecutarse la peticion esto hasta que el SO lo vea conveniente.
 
 Para realizar las pruebas se dejan los siguientes pasos para simular una acción en segundo plano:
 
