@@ -23,7 +23,7 @@ class BackgroundTaskManager {
 
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: "com.example.PokeApiApp.refreshData")
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 1 * 60)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 2 * 60)
         try? BGTaskScheduler.shared.submit(request)
     }
 

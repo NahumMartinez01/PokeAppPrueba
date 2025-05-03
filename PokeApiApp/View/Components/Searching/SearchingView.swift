@@ -63,7 +63,7 @@ struct SearchingView: View {
                     }
                     .accessibilityLabel("Campo de búsqueda de pokemon")
             }
-            .padding([.horizontal, .bottom])
+            .padding([.horizontal])
             
             VStack(alignment: .leading) {
                 Text("Filtrar por:")
@@ -85,7 +85,7 @@ struct SearchingView: View {
                 .accessibilityLabel("Selector de tipo de filtro para Pokémon")
                 .accessibilityHint("Elige cómo filtrar los Pokémon: por nombre, número de identificación o tipo")
             }
-            .padding([.horizontal, .bottom])
+            .padding([.horizontal])
         }
         .padding(.bottom)
         .background(Color(.backgroundHeader))
