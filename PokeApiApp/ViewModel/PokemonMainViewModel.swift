@@ -29,11 +29,12 @@ class PokemonMainViewModel: ObservableObject {
     
     //MARK: INITIAL DATA
     func loadInitialData() async {
-        if InitialFetchFlagManager.wasInitialFetchDone() {
-            await fetchSavedPokemons()
+        if !InitialFetchFlagManager.wasInitialFetchDone() {
+            await getPokemonsList()
+            InitialFetchFlagManager.markInitialFetchDone()
         }
         else {
-            await getPokemonsList()
+            await fetchSavedPokemons()
         }
     }
     
