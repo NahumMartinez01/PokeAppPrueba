@@ -26,7 +26,7 @@ git clone https://github.com/NahumMartinez01/PokeAppPrueba.git
 - En caso de usar un dispositivo físico para realizar las pruebas(Recomendado para probar background Fetch)
 - Es posible que salte el siguiente error:
  ```bash
-    The request to open "NahumMartinez.PokeApiApp" failed
+    The request to open "NahumMartinez.PokeDexApp" failed.
     
     Verify that the Developer App certificate for your account is trusted on your device.
     Open Settings on the device and navigate to General -> VPN & Device Management, 
