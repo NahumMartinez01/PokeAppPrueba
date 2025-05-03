@@ -32,7 +32,13 @@ git clone https://github.com/NahumMartinez01/PokeAppPrueba.git
     Open Settings on the device and navigate to General -> VPN & Device Management, 
     then select your Developer App certificate to trust it.
  ```
- - Solo se deben seguir los pasos para dar acceso y instalar la aplicación.
+ - Solo se deben seguir los pasos para dar acceso y instalar la aplicación:
+  ```bash
+    1. Abre Configuración en el dispositivo.
+    2. Ir a opción General.
+    3. Ir a opción VPN y gestión de dispositivos.
+    luego selecciona tu certificado de Aplicación de Desarrollador para confiar en él.
+ ```
  
 ## Notas Importantes 
 Para probar correctamente las tareas en segundo plano (**Background Fetch**), se recomienda realizar las pruebas en un dispositivo físico. El simulador de Xcode tiene limitaciones que pueden afectar la ejecución de tareas en segundo plano, como la simulación del ciclo de vida de la aplicación y la gestión de recursos, lo que podría generar comportamientos inesperados.
