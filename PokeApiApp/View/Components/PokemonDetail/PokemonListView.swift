@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PokemonListView: View {
+    @Binding var currentSearch: String
     let pokemons: [PokemonDetailModel]
     let columns = [
         GridItem(.flexible()),
@@ -26,13 +27,29 @@ struct PokemonListView: View {
                 .accessibilityLabel("Listado de pokemons")
             }
             .overlay(
-                pokemons.isEmpty ? Text("No se encontraron Pokémons")
-                    .foregroundColor(.gray)
-                    .font(.subheadline) : nil
+                Group {
+                    if pokemons.isEmpty {
+                        if !currentSearch.isEmpty {
+                            Text("No se han encontrado resultados")
+                                .foregroundColor(Color(.textError))
+                                .font(.title2)
+                        }
+                        else {
+                            Text("Tu Pokédex aún está vacía")
+                                .foregroundColor(Color(.textError))
+                                .font(.title2)
+                        }
+                    }
+                    else {
+                        EmptyView()
+                       
+                    }
+                }
             )
         }
     }
 }
-    #Preview {
-        PokemonListView(pokemons: [])
-    }
+
+#Preview {
+    PokemonListView(currentSearch: .constant(""), pokemons: [])
+}

@@ -11,14 +11,34 @@ struct SearchingView: View {
     @Binding var searchText: String
     @Binding var filterType: FilterType
     @FocusState private var isFocused: Bool
+  
     var onSearchChange: ((String) -> Void)? = nil
+    var searchPlaceholder: String {
+        switch filterType {
+        case .id:
+            return "Buscar por número de Pokémon"
+        case .type:
+            return "Buscar por tipo de Pokémon"
+        case .name:
+            return "Buscar Pokémon"
+        }
+    }
+
+    init(searchText: Binding<String>, filterType: Binding<FilterType>, onSearchChange: ((String) -> Void)? = nil) {
+        _filterType = filterType
+        _searchText = searchText
+        self.onSearchChange = onSearchChange
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(.selecter)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.black], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.black], for: .normal)
+    }
     
     var body: some View {
         VStack(spacing: 20) {
             VStack {
-                TextField("Buscar", text: $searchText)
-                    .frame(height: 45)
-                    .padding(6)
+                TextField(searchPlaceholder, text: $searchText)
+                    .frame(height: 50)
+                    .padding(.horizontal, 20)
                     .foregroundColor(.primary)
                     .focused($isFocused)
                     .background(
@@ -43,7 +63,7 @@ struct SearchingView: View {
                     }
                     .accessibilityLabel("Campo de búsqueda de pokemon")
             }
-            .padding(.horizontal)
+            .padding([.horizontal, .bottom])
             
             VStack(alignment: .leading) {
                 Text("Filtrar por:")
@@ -67,11 +87,11 @@ struct SearchingView: View {
             }
             .padding([.horizontal, .bottom])
         }
-        .background(Color(.backgroundHeader))
         .padding(.bottom)
+        .background(Color(.backgroundHeader))
     }
 }
 
 #Preview {
-    SearchingView(searchText: .constant(""), filterType: .constant(.name))
+    SearchingView(searchText: .constant(""), filterType: .constant(.name), onSearchChange: { _ in})
 }

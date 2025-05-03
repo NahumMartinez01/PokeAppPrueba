@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
-    <device id="retina6_0" orientation="portrait" appearance="dark"/>
+    <device id="retina6_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
@@ -24,7 +24,7 @@
                                         <rect key="frame" x="20" y="20" width="350" height="416"/>
                                     </imageView>
                                 </subviews>
-                                <color key="backgroundColor" name="backgroundColor"/>
+                                <color key="backgroundColor" name="backgroundHeader"/>
                                 <constraints>
                                     <constraint firstItem="ti2-Hx-ZAZ" firstAttribute="centerY" secondItem="HGD-Zi-r3d" secondAttribute="centerY" id="8Tg-du-dCX"/>
                                     <constraint firstItem="ti2-Hx-ZAZ" firstAttribute="centerX" secondItem="HGD-Zi-r3d" secondAttribute="centerX" id="9Uz-1p-3i4"/>
@@ -34,7 +34,7 @@
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Bcu-3y-fUS"/>
-                        <color key="backgroundColor" name="backgroundColor"/>
+                        <color key="backgroundColor" name="backgroundHeader"/>
                         <constraints>
                             <constraint firstItem="HGD-Zi-r3d" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="7A1-cJ-7SA"/>
                             <constraint firstItem="HGD-Zi-r3d" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="9Ms-5j-FLz"/>
@@ -50,8 +50,8 @@
     </scenes>
     <resources>
         <image name="pokebolaLoading" width="1158" height="1156"/>
-        <namedColor name="backgroundColor">
-            <color red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        <namedColor name="backgroundHeader">
+            <color red="1" green="0.35686274509803922" blue="0.35686274509803922" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
         </namedColor>
     </resources>
 </document>

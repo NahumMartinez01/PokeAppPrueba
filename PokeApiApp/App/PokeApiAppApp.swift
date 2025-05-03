@@ -23,13 +23,13 @@ struct PokeApiAppApp: App {
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
                     .onAppear {
                         BackgroundTaskManager.shared.scheduleAppRefresh()
-                        BackgroundTaskManager.shared.scheduleProcessing()
+//                        BackgroundTaskManager.shared.scheduleProcessing()
                     }
                     .onChange(of: scenePhase) { newPhase in
                         switch newPhase {
                         case .background:
                             BackgroundTaskManager.shared.scheduleAppRefresh()
-                            BackgroundTaskManager.shared.scheduleProcessing()
+                           
                         default:
                             break
                         }

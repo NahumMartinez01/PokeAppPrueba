@@ -49,8 +49,6 @@ class PokemonRepository: PokemonRepositoryProtocol {
     }
     
     func savePokemons(_ pokemons: [PokemonDetailModel]) throws {
-        try deleteAllPokemons()
-        
         for pokemon in pokemons {
             let fetchRequest: NSFetchRequest<PokemonDetailEntity> = PokemonDetailEntity.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "id == %lld", Int64(pokemon.id))

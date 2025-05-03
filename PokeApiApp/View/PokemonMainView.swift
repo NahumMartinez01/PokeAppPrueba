@@ -20,18 +20,16 @@ struct PokemonMainView: View {
         ZStack {
             Color(.background)
                 .ignoresSafeArea(.all)
-            
             VStack {
                 SearchingView(searchText: $viewModel.searchText, filterType: $viewModel.filterType){ newSearch in
                     viewModel.fetchSavedPokemons(searchText: newSearch, filterType: viewModel.filterType)
                 }
-                PokemonListView(pokemons: myAppManager.detailPokemon)
+                PokemonListView(currentSearch: $viewModel.searchText, pokemons: myAppManager.detailPokemon)
             }
         }
         .navigationTitle("POKEDEX")
         .task {
-            viewModel.fetchSavedPokemons()
-            await viewModel.getPokemonsList()
+            await viewModel.loadInitialData()
         }
         .alert(item: $viewModel.currentError) { error in
             Alert(

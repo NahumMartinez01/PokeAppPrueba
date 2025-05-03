@@ -48,13 +48,13 @@ extension AppServices: AppServicesProtocol {
         sessionConfig.timeoutIntervalForResource = 3000.0
         let (data, response) = try await URLSession.shared.data(for: request)
         
-//        AppServicesUtils.printRequest(
-//            requestUrl: url.absoluteString,
-//            method: method,
-//            parameters: nil,
-//            customHeaders: headers ?? [:],
-//            responseData: data
-//        )
+        AppServicesUtils.printRequest(
+            requestUrl: url.absoluteString,
+            method: method,
+            parameters: nil,
+            customHeaders: headers ?? [:],
+            responseData: data
+        )
         
         guard let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode else {
             throw URLError(.badServerResponse)

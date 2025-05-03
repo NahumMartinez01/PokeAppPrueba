@@ -14,14 +14,14 @@ struct PokemonItemView: View {
     var body: some View {
         VStack {
             PokemonImageView(urlImage: pokemon.sprites.front_default ?? "")
-            DescriptionPokemonView(name: pokemon.name, type: pokemon.types)
+            DescriptionPokemonView( name: pokemon.name, type: pokemon.types)
         }
         .padding()
         .background(
             RoundedRectangle(cornerRadius: 12)
                 .fill(AppUtils.backgroundGradient(for: pokemon.types.first?.type.name ?? ""))
         )
-        .shadow(color: AppUtils.backgroundColor(for: pokemon.types.first?.type.name ?? ""), radius: 2, x: 0, y: 2)
+        .shadow(color: AppUtils.backgroundColor(for: pokemon.types.first?.type.name ?? ""), radius: 1, x: 0, y: 1)
         .rotation3DEffect(
             .degrees(0),
             axis: (x: 0, y: 0, z: 20),
@@ -31,5 +31,5 @@ struct PokemonItemView: View {
 }
 
 #Preview {
-    PokemonItemView(pokemon: PokemonDetailModel(id: 0, name: "", sprites: SpriteImages(front_default: ""), types: [] ))
+    PokemonItemView( pokemon: PokemonDetailModel(id: 0, name: "", sprites: SpriteImages(front_default: ""), types: []))
 }

@@ -16,7 +16,7 @@ struct ImageLoadingView: View {
             .frame(width: 50, height: 50)
             .rotationEffect(.degrees(isRotating ? 360 : 0))
             .animation(
-                .linear(duration: 0.1)
+                .linear(duration: 0.5)
                     .repeatForever(autoreverses: false),
                 value: isRotating
             )

@@ -21,56 +21,30 @@ class PokemonMainViewModel: ObservableObject {
     private var viewContext: NSManagedObjectContext
     private var cancellable = Set<AnyCancellable>()
     
-    private var didDownloadPokemons: Bool {
-        get { UserDefaults.standard.bool(forKey: "DidDownloadPokemons") }
-        set { UserDefaults.standard.set(newValue, forKey: "DidDownloadPokemons") }
-    }
-    
     init(appServices: AppServicesProtocol = AppServices.shared, myAppManager: MyAppManager = MyAppManager.shared, viewContext: NSManagedObjectContext) {
         self.appServices = appServices
         self.myAppManager = myAppManager
         self.viewContext = viewContext
     }
     
+    func loadInitialData() async {
+        if InitialFetchFlagManager.wasInitialFetchDone() {
+            await getPokemonsList()
+        }
+        else {
+            await fetchSavedPokemons()
+        }
+    }
     //MARK: SERVICES FUNCTIONS
-    //    @MainActor
-    //    func getFiveNewPokemonsForBackgroundFetch() async {
-    //            do {
-    //                let response = try await appServices.fetchRequest(
-    //                    url: AppServicesUtils.PokemonURLs.getPokemonList(limit: 50, offset: 0),
-    //                    method: AppServicesK.methodRequest.GET.rawValue,
-    //                    headers: nil,
-    //                    body: nil,
-    //                    responseType: PokemonListBaseResponse.self
-    //                )
-    //                self.pokemons = response.results ?? []
-    //                await withTaskGroup(of: Void.self) { group in
-    //                    for pokem in pokemons {
-    //                        group.addTask {
-    //                            await self.getPokemonDetail(url: pokem.url ?? "")
-    //                        }
-    //                    }
-    //                }
-    //                print("pokemons", self.pokemons)
-    //                savePokemonsToCoreData()
-    //            } catch {
-    //                currentError = .downloadFailed(message: error.localizedDescription)
-    //                print("Un error ha ocurrido:", error.localizedDescription)
-    //            }
-    //    }
-    
-    
     @MainActor
     func getPokemonsList() async {
-        //        guard !didDownloadPokemons else {
-        //                print("✅ Pokémons ya fueron descargados anteriormente")
-        //                return
-        //        }
-        hasError = false
         self.myAppManager.isLoadingViewVisible = true
+        
+        let currentOffset = LimitsOffsetManager.getCurrentOffset()
+        let limit = 5
         do {
             let response = try await appServices.fetchRequest(
-                url: AppServicesUtils.PokemonURLs.getPokemonList(limit: 5, offset: 0),
+                url: AppServicesUtils.PokemonURLs.getPokemonList(limit: limit, offset: currentOffset),
                 method: AppServicesK.methodRequest.GET.rawValue,
                 headers: nil,
                 body: nil,
@@ -85,10 +59,9 @@ class PokemonMainViewModel: ObservableObject {
                 }
             }
             savePokemonsToCoreData(pokemons: detailPokemon)
-            didDownloadPokemons = true
+            LimitsOffsetManager.imcrementOffset(limit)
         } catch {
             currentError = .downloadFailed(message: error.localizedDescription)
-            hasError = true
             print("Un error ha ocurrido:", error.localizedDescription)
         }
         self.myAppManager.isLoadingViewVisible = false
@@ -96,7 +69,6 @@ class PokemonMainViewModel: ObservableObject {
     
     @MainActor
     func getPokemonDetail(url: String) async {
-        hasError = false
         do {
             let response = try await appServices.fetchRequest(
                 url: url,
@@ -107,8 +79,7 @@ class PokemonMainViewModel: ObservableObject {
             )
             self.detailPokemon.append(response)
         } catch {
-            hasError = true
-            //currentError = .downloadFailed(message: error.localizedDescription)
+            currentError = .downloadFailed(message: error.localizedDescription)
             print("Error al obtener el detalle para \(url):", error.localizedDescription)
         }
     }
