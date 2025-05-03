@@ -15,9 +15,9 @@ enum PokemonError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .downloadFailed(message: let message):
-            return "Error al obtener el listado de pokemons: \(message)"
+            return "Error al obtener el listado de pokemons: \(message), Intentalo mas tarde."
         case .coreDataError(message: let message):
-            return "Error al guardar el pokemon: \(message)"
+            return "Error al guardar el pokemon: \(message), Intentalo mas tarde."
         case .getCoreDataError(message: let message):
             return "Error al obtener los pokemons guardados: \(message)"
         }

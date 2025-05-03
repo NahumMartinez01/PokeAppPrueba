@@ -22,7 +22,7 @@ struct ContentView: View {
                 }
                 .onAppear {
                     myAppManager.bounce = true
-                   // myAppManager.showLoading()
+                    myAppManager.showLoading()
                 }
             }
         }
