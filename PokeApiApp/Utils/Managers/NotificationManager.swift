@@ -7,6 +7,7 @@
 import Foundation
 import UserNotifications
 
+//MARK: MANAGER PARA LA GESTION DE NOTIFICACIONES
 class NotificationManager {
     static let shared = NotificationManager()
 

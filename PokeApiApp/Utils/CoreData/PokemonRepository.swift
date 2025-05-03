@@ -15,6 +15,7 @@ protocol PokemonRepositoryProtocol {
     func deleteAllPokemons() throws
 }
 
+//MARK: REPOSITORY PARA GESTION DE OPERACIONES DE COREDATA
 class PokemonRepository: PokemonRepositoryProtocol {
     private let viewContext: NSManagedObjectContext
     

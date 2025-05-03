@@ -27,6 +27,7 @@ class PokemonMainViewModel: ObservableObject {
         self.viewContext = viewContext
     }
     
+    //MARK: INITIAL DATA
     func loadInitialData() async {
         if InitialFetchFlagManager.wasInitialFetchDone() {
             await getPokemonsList()
@@ -35,6 +36,7 @@ class PokemonMainViewModel: ObservableObject {
             await fetchSavedPokemons()
         }
     }
+    
     //MARK: SERVICES FUNCTIONS
     @MainActor
     func getPokemonsList() async {

@@ -7,6 +7,8 @@
 
 import Foundation
 import CoreData
+
+//MARK: MAPPER PARA OBTENCIÓN Y CONVERSIÓN DE DATA
 struct PokemonMapper {
     static func toModel(from entity: PokemonDetailEntity) -> PokemonDetailModel {
         PokemonDetailModel(

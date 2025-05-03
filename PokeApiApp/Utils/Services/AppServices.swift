@@ -22,6 +22,7 @@ final class AppServices {
     private init() {}
 }
 
+//MARK: CONFIGURACIÓN DE NUESTRO URLSESSION
 extension AppServices: AppServicesProtocol {
     
     func fetchRequest<T: Decodable>(
@@ -46,6 +47,7 @@ extension AppServices: AppServicesProtocol {
         let sessionConfig = URLSessionConfiguration.default
         sessionConfig.timeoutIntervalForRequest = 3000.0
         sessionConfig.timeoutIntervalForResource = 3000.0
+        
         let (data, response) = try await URLSession.shared.data(for: request)
         
         AppServicesUtils.printRequest(

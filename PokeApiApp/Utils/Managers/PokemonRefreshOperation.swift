@@ -7,6 +7,8 @@
 
 import Foundation
 
+
+// MARK: - Operación de fondo para actualizar Pokémons
 final class PokemonRefreshOperation: Operation, @unchecked Sendable {
     override func main() {
         let backgroundContext = PersistenceController.shared.backgroundContext

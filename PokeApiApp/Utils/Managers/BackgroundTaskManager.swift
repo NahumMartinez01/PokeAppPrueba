@@ -9,6 +9,7 @@ import Foundation
 import BackgroundTasks
 import UserNotifications
 
+//MARK: MANAGER DE BACKGROUND TASK (OPERACIONES EN SEGUNDO PLANO)
 class BackgroundTaskManager {
     static let shared = BackgroundTaskManager()
 

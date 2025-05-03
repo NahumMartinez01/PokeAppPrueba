@@ -15,7 +15,7 @@ struct PokemonMainView: View {
     init(context: NSManagedObjectContext) {
         _viewModel = StateObject(wrappedValue: PokemonMainViewModel(viewContext: context))
     }
-    
+
     var body: some View {
         ZStack {
             Color(.background)

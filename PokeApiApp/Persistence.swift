@@ -15,6 +15,8 @@ class PersistenceController: ObservableObject {
     var viewContext: NSManagedObjectContext {
            container.viewContext
        }
+    
+    //MARK: CONTEXT PARA TRABAJAR EN SEGUNDO PLANO
     var backgroundContext: NSManagedObjectContext {
            container.newBackgroundContext()
        }
