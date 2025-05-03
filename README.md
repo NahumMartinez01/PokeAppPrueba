@@ -23,6 +23,16 @@
  ```bash
 git clone https://github.com/NahumMartinez01/PokeAppPrueba.git
  ```
+- En caso de usar un dispositivo físico para realizar las pruebas(Recomendado para probar background Fetch)
+- Es posible que salte el siguiente error:
+ ```bash
+    The request to open "NahumMartinez.PokeApiApp" failed
+    
+    Verify that the Developer App certificate for your account is trusted on your device.
+    Open Settings on the device and navigate to General -> VPN & Device Management, 
+    then select your Developer App certificate to trust it.
+ ```
+ - Solo se deben seguir los pasos para dar acceso y instalar la aplicación.
  
 ## Notas Importantes 
 Para probar correctamente las tareas en segundo plano (**Background Fetch**), se recomienda realizar las pruebas en un dispositivo físico. El simulador de Xcode tiene limitaciones que pueden afectar la ejecución de tareas en segundo plano, como la simulación del ciclo de vida de la aplicación y la gestión de recursos, lo que podría generar comportamientos inesperados.
