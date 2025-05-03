@@ -10,7 +10,8 @@
 - **Utilización de Background Fetch: La aplicación actualiza la lista de pokemons al estar en segundo plano 
 - **Almacenamiento de Pokemon: Se utiliza CoreData para almacenar el listado de pokémons.
 - **Envio de notificaciones: Se envia notificacion al usuario cuando se actualiza la lista en segundo plano.
-- **TestUnitarios: Se realizaron test para pruebas unitarias
+- **Unit Testing: Se realizaron test para pruebas unitarias.
+
 ## Requisitos
 
 - **iOS 16.0** o superior
