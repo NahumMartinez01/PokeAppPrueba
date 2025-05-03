@@ -21,11 +21,9 @@ struct PokemonImageView: View {
                     .scaledToFill()
                     .frame(width: 100, height: 100)
             case .failure:
-                EmptyView()
-                    .onAppear {
-                        myAppManager.errorMessage = .downloadFailed(message: "No se pudo descargar la imagen del Pokémon")
-                        myAppManager.showErrorAlert = true
-                    }
+                Image(.pokebolaLoading)
+                    .resizable()
+                    .frame(width: 75, height: 75)
             @unknown default:
                 EmptyView()
             }
@@ -35,15 +33,6 @@ struct PokemonImageView: View {
                 .fill(Color.gray.opacity(0.2))
                 
         )
-        .alert(isPresented: $myAppManager.showErrorAlert) {
-                    Alert(
-                        title: Text("Error"),
-                        message: Text(myAppManager.errorMessage?.errorDescription  ?? "Error desconocido"),
-                        dismissButton: .default(Text("OK")) {
-                            myAppManager.errorMessage = nil 
-                        }
-                    )
-                }
     }
 }
 

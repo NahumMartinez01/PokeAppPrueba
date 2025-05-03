@@ -22,8 +22,18 @@ struct ContentView: View {
                 }
                 .onAppear {
                     myAppManager.bounce = true
+                   // myAppManager.showLoading()
                 }
             }
+        }
+        .alert(isPresented: $myAppManager.showErrorAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(myAppManager.errorMessage?.localizedDescription ?? "Ha ocurrido un error"),
+                dismissButton: .default(Text("OK")) {
+                    myAppManager.errorMessage = nil
+                }
+            )
         }
     }
 }

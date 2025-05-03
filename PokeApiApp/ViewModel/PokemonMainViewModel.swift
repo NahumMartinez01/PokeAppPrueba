@@ -30,8 +30,8 @@ class PokemonMainViewModel: ObservableObject {
     //MARK: INITIAL DATA
     func loadInitialData() async {
         if !InitialFetchFlagManager.wasInitialFetchDone() {
+           
             await getPokemonsList()
-            InitialFetchFlagManager.markInitialFetchDone()
         }
         else {
             await fetchSavedPokemons()
@@ -39,36 +39,40 @@ class PokemonMainViewModel: ObservableObject {
     }
     
     //MARK: SERVICES FUNCTIONS
-    @MainActor
-    func getPokemonsList() async {
-        self.myAppManager.isLoadingViewVisible = true
-        
-        let currentOffset = LimitsOffsetManager.getCurrentOffset()
-        let limit = 5
-        do {
-            let response = try await appServices.fetchRequest(
-                url: AppServicesUtils.PokemonURLs.getPokemonList(limit: limit, offset: currentOffset),
-                method: AppServicesK.methodRequest.GET.rawValue,
-                headers: nil,
-                body: nil,
-                responseType: PokemonListBaseResponse.self
-            )
-            self.pokemons = response.results ?? []
-            await withTaskGroup(of: Void.self) { group in
-                for pokem in pokemons {
-                    group.addTask {
-                        await self.getPokemonDetail(url: pokem.url ?? "")
+        @MainActor
+        func getPokemonsList() async {
+            self.myAppManager.isLoadingViewVisible = true
+            
+            defer {
+                   self.myAppManager.isLoadingViewVisible = false
+               }
+            let currentOffset = LimitsOffsetManager.getCurrentOffset()
+            let limit = 5
+            do {
+                let response = try await appServices.fetchRequest(
+                    url: AppServicesUtils.PokemonURLs.getPokemonList(limit: limit, offset: currentOffset),
+                    method: AppServicesK.methodRequest.GET.rawValue,
+                    headers: nil,
+                    body: nil,
+                    responseType: PokemonListBaseResponse.self
+                )
+                self.pokemons = response.results ?? []
+                await withTaskGroup(of: Void.self) { group in
+                    for pokem in pokemons {
+                        group.addTask {
+                            await self.getPokemonDetail(url: pokem.url ?? "")
+                        }
                     }
                 }
+                savePokemonsToCoreData(pokemons: detailPokemon)
+                LimitsOffsetManager.imcrementOffset(limit)
+                InitialFetchFlagManager.markInitialFetchDone()
+            } catch {
+                myAppManager.errorMessage = .downloadFailed(message: error.localizedDescription)
+                myAppManager.showErrorAlert = true
+                InitialFetchFlagManager.reset()
             }
-            savePokemonsToCoreData(pokemons: detailPokemon)
-            LimitsOffsetManager.imcrementOffset(limit)
-        } catch {
-            currentError = .downloadFailed(message: error.localizedDescription)
-            print("Un error ha ocurrido:", error.localizedDescription)
         }
-        self.myAppManager.isLoadingViewVisible = false
-    }
     
     @MainActor
     func getPokemonDetail(url: String) async {
@@ -82,15 +86,18 @@ class PokemonMainViewModel: ObservableObject {
             )
             self.detailPokemon.append(response)
         } catch {
-            currentError = .downloadFailed(message: error.localizedDescription)
-            print("Error al obtener el detalle para \(url):", error.localizedDescription)
+            myAppManager.errorMessage = .downloadFailed(message: error.localizedDescription)
+            myAppManager.showErrorAlert = true
+            InitialFetchFlagManager.reset()
         }
     }
     
     //MARK: UTILS FUNCTION
     @MainActor
     func fetchSavedPokemons(searchText: String = "", filterType: FilterType = .name) {
+        myAppManager.isLoadingViewVisible = true
         myAppManager.fetchSavedPokemnos(searchText: searchText, filterType: filterType)
+        myAppManager.isLoadingViewVisible = false
     }
     
     @MainActor

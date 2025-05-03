@@ -41,15 +41,17 @@ extension AppServices: AppServicesProtocol {
         request.httpMethod = method
         request.allHTTPHeaderFields = headers
         request.httpBody = body
-        request.timeoutInterval = 3000.0
+        request.timeoutInterval = 60.0
         
         // PARA TRABAJAR CONEXIONES LENTAS SE SETEA UNOS TIMEOUT
         let sessionConfig = URLSessionConfiguration.default
-        sessionConfig.timeoutIntervalForRequest = 3000.0
-        sessionConfig.timeoutIntervalForResource = 3000.0
+        sessionConfig.timeoutIntervalForRequest = 60.0
+        sessionConfig.timeoutIntervalForResource = 300.0
+        let session = URLSession(configuration: sessionConfig)
         
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await session.data(for: request)
         
+        #if DEBUG
         AppServicesUtils.printRequest(
             requestUrl: url.absoluteString,
             method: method,
@@ -57,6 +59,7 @@ extension AppServices: AppServicesProtocol {
             customHeaders: headers ?? [:],
             responseData: data
         )
+        #endif
         
         guard let httpResponse = response as? HTTPURLResponse, 200..<300 ~= httpResponse.statusCode else {
             throw URLError(.badServerResponse)

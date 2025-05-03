@@ -56,4 +56,14 @@ class MyAppManager: ObservableObject {
             self.showErrorAlert = true
         }
     }
+    
+    
+    // MARK: - UTILS FUNCTION
+    func showLoading(for seconds: Double = 5.0) {
+        isLoadingViewVisible = true
+        bounce = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.isLoadingViewVisible = false
+        }
+    }
 }

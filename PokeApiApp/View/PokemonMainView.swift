@@ -31,14 +31,8 @@ struct PokemonMainView: View {
         .task {
             await viewModel.loadInitialData()
         }
-        .alert(item: $viewModel.currentError) { error in
-            Alert(
-                title: Text("Ocurrió un error"),
-                message: Text(error.localizedDescription),
-                dismissButton: .default(Text("OK")) {
-                    viewModel.currentError = nil
-                }
-            )
+        .onAppear {
+            myAppManager.isLoadingViewVisible = false
         }
     }
 }
